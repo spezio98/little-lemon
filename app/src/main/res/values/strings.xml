@@ -6,4 +6,6 @@
     <string name="onboarding_last_name">Last name</string>
     <string name="onboarding_register_button_text">Register</string>
     <string name="onboarding_email">Email</string>
+    <string name="unsuccessful_registration_text">Registration unsuccessful. Please enter all data.</string>
+    <string name="successful_registration_text">Registration successful!</string>
 </resources>

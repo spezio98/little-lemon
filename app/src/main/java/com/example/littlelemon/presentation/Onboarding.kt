@@ -1,5 +1,6 @@
-package com.example.littlelemon
+package com.example.littlelemon.presentation
 
+import android.widget.Toast
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
@@ -9,7 +10,6 @@ import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.size
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.MaterialTheme
@@ -20,7 +20,6 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
@@ -29,10 +28,18 @@ import com.example.littlelemon.ui.theme.Primary
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
+import androidx.compose.ui.platform.LocalContext
+import androidx.navigation.NavHostController
+import androidx.navigation.compose.rememberNavController
+import com.example.littlelemon.R
+import com.example.littlelemon.data.SharedPreferencesRepository
+import com.example.littlelemon.data.model.User
+import com.example.littlelemon.navigation.Destinations
+import com.example.littlelemon.presentation.commoncomponents.Logo
 import com.example.littlelemon.ui.theme.Secondary
 
 @Composable
-fun Onboarding(modifier: Modifier) {
+fun Onboarding(modifier: Modifier, navController: NavHostController, sharedPreferencesRepository: SharedPreferencesRepository,) {
     Column(
         //verticalArrangement = Arrangement.Top,
         horizontalAlignment = Alignment.CenterHorizontally,
@@ -40,32 +47,18 @@ fun Onboarding(modifier: Modifier) {
     ) {
         Logo()
         OnboardingTitle()
-        OnboardingForm()
+        OnboardingForm(navController, sharedPreferencesRepository)
     }
 }
 
 @Preview(showBackground = true)
 @Composable
 fun OnboardingPreview() {
-    Onboarding(Modifier)
-}
-
-@Composable
-fun Logo() {
-    Image(
-        painter = painterResource(id = R.drawable.logo),
-        contentDescription = "Little Lemon Logo",
-        modifier = Modifier
-            .padding(vertical = 20.dp)
-            .size(width = 200.dp, height = 50.dp)
-
+    Onboarding(
+        modifier = Modifier,
+        navController = rememberNavController(),
+        sharedPreferencesRepository = SharedPreferencesRepository.getSharedPreferenceRepository(LocalContext.current)
     )
-}
-
-@Preview(showBackground = true)
-@Composable
-fun LogoPreview() {
-    Logo()
 }
 
 @Composable
@@ -89,11 +82,12 @@ fun OnboardingTitlePreview() {
 }
 
 @Composable
-fun OnboardingForm() {
+fun OnboardingForm(navController: NavHostController, sharedPreferencesRepository: SharedPreferencesRepository) {
 
     var firstName by remember { mutableStateOf("") }
     var lastName by remember { mutableStateOf("") }
     var email by remember { mutableStateOf("") }
+    val context = LocalContext.current
 
     Column(
         modifier = Modifier
@@ -166,7 +160,22 @@ fun OnboardingForm() {
             modifier = Modifier.fillMaxSize()
         ) {
             Button(
-                onClick = {},
+                onClick = {
+                    if(firstName.isNotBlank() && lastName.isNotBlank() && email.isNotBlank()){
+                        sharedPreferencesRepository.saveData(User(
+                            firstName = firstName,
+                            lastName = lastName,
+                            email = email
+                        ))
+                        Toast.makeText(context,
+                            context.getString(R.string.successful_registration_text), Toast.LENGTH_SHORT).show()
+                        navController.navigate(Destinations.Home.route)
+                    }
+                    else{
+                        Toast.makeText(context,
+                            context.getString(R.string.unsuccessful_registration_text), Toast.LENGTH_SHORT).show()
+                    }
+                },
                 colors = ButtonDefaults.buttonColors(
                     containerColor = Secondary,
                     contentColor = Primary
@@ -187,5 +196,8 @@ fun OnboardingForm() {
 @Preview(showBackground = true)
 @Composable
 fun OnboardingFormPreview() {
-    OnboardingForm()
+    OnboardingForm(
+        navController = rememberNavController(),
+        sharedPreferencesRepository = SharedPreferencesRepository.getSharedPreferenceRepository(LocalContext.current)
+    )
 }
