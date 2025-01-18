@@ -29,11 +29,18 @@ fun Navigation(navController: NavHostController, sharedPreferencesRepository: Sh
         }
 
         composable(Destinations.Home.route) {
-            Home()
+            Home(
+                modifier = modifier,
+                navController = navController
+            )
         }
 
         composable(Destinations.Profile.route) {
-            Profile(modifier)
+            Profile(
+                modifier = modifier,
+                navController = navController,
+                sharedPreferencesRepository = sharedPreferencesRepository
+            )
         }
     }
 }

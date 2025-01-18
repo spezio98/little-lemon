@@ -162,7 +162,7 @@ fun OnboardingForm(navController: NavHostController, sharedPreferencesRepository
             Button(
                 onClick = {
                     if(firstName.isNotBlank() && lastName.isNotBlank() && email.isNotBlank()){
-                        sharedPreferencesRepository.saveData(User(
+                        sharedPreferencesRepository.saveUserData(User(
                             firstName = firstName,
                             lastName = lastName,
                             email = email

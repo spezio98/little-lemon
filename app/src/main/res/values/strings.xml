@@ -8,4 +8,5 @@
     <string name="onboarding_email">Email</string>
     <string name="unsuccessful_registration_text">Registration unsuccessful. Please enter all data.</string>
     <string name="successful_registration_text">Registration successful!</string>
+    <string name="logout_button_text">Log out</string>
 </resources>

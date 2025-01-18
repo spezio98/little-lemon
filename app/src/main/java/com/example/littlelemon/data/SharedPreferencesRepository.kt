@@ -31,12 +31,27 @@ class SharedPreferencesRepository private constructor(
         return sharedPreferences.getBoolean(IS_USER_AUTHENTICATED, false)
     }
 
-    fun saveData(user: User) {
+    fun saveUserData(user: User) {
         sharedPreferences.edit().apply{
             putString(FIRST_NAME, user.firstName)
             putString(LAST_NAME, user.lastName)
             putString(EMAIL, user.email)
             putBoolean(IS_USER_AUTHENTICATED, true)
         }.commit()
+    }
+
+    fun getUserData(): User? {
+        return if (isUserAuthenticated()){
+            User(
+                sharedPreferences.getString(FIRST_NAME, "")!!,
+                sharedPreferences.getString(LAST_NAME, "")!!,
+                sharedPreferences.getString(EMAIL, "")!!
+            )
+        } else
+            null
+    }
+
+    fun clearAll() {
+        sharedPreferences.edit().clear().commit()
     }
 }
