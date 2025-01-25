@@ -5,13 +5,14 @@ import androidx.compose.ui.Modifier
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
+import com.example.littlelemon.data.AppRepository
 import com.example.littlelemon.data.SharedPreferencesRepository
 import com.example.littlelemon.presentation.Home
 import com.example.littlelemon.presentation.Onboarding
 import com.example.littlelemon.presentation.Profile
 
 @Composable
-fun Navigation(navController: NavHostController, sharedPreferencesRepository: SharedPreferencesRepository, modifier: Modifier) {
+fun Navigation(navController: NavHostController, sharedPreferencesRepository: SharedPreferencesRepository, appRepository: AppRepository, modifier: Modifier) {
 
     val startDestination = if (sharedPreferencesRepository.isUserAuthenticated()) {
         Destinations.Home.route
@@ -31,7 +32,8 @@ fun Navigation(navController: NavHostController, sharedPreferencesRepository: Sh
         composable(Destinations.Home.route) {
             Home(
                 modifier = modifier,
-                navController = navController
+                navController = navController,
+                appRepository = appRepository
             )
         }
 

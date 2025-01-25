@@ -9,6 +9,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Scaffold
 import androidx.compose.ui.Modifier
 import androidx.navigation.compose.rememberNavController
+import com.example.littlelemon.data.AppRepository
 import com.example.littlelemon.data.SharedPreferencesRepository
 import com.example.littlelemon.navigation.Navigation
 import com.example.littlelemon.ui.theme.LittleLemonTheme
@@ -18,11 +19,12 @@ class MainActivity : ComponentActivity() {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
         val sharedPreferencesRepository = SharedPreferencesRepository.getSharedPreferenceRepository(this.applicationContext)
+        val appRepository = AppRepository.getInstance(this.applicationContext)
         setContent {
             LittleLemonTheme {
                 Scaffold( modifier = Modifier.fillMaxSize() ) { innerPadding ->
                     val navController = rememberNavController()
-                    Navigation(navController, sharedPreferencesRepository, Modifier.padding(innerPadding))
+                    Navigation(navController, sharedPreferencesRepository, appRepository, Modifier.padding(innerPadding))
                 }
             }
         }

@@ -9,4 +9,8 @@
     <string name="unsuccessful_registration_text">Registration unsuccessful. Please enter all data.</string>
     <string name="successful_registration_text">Registration successful!</string>
     <string name="logout_button_text">Log out</string>
+    <string name="home_hero_section_title">Little Lemon</string>
+    <string name="home_hero_section_subtitle">Chicago</string>
+    <string name="home_hero_section_description">We are a family owned Mediterranean restaurant, focused on traditional recipes served with a modern twist.</string>
+    <string name="searchbar_placeholder">Enter Search Phrase</string>
 </resources>
