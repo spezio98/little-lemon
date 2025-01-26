@@ -7,41 +7,26 @@ import androidx.activity.enableEdgeToEdge
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Scaffold
-import androidx.compose.material3.Text
-import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.tooling.preview.Preview
+import androidx.navigation.compose.rememberNavController
+import com.example.littlelemon.data.AppRepository
+import com.example.littlelemon.data.SharedPreferencesRepository
+import com.example.littlelemon.navigation.Navigation
 import com.example.littlelemon.ui.theme.LittleLemonTheme
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
+        val sharedPreferencesRepository = SharedPreferencesRepository.getSharedPreferenceRepository(this.applicationContext)
+        val appRepository = AppRepository.getInstance(this.applicationContext)
         setContent {
             LittleLemonTheme {
                 Scaffold( modifier = Modifier.fillMaxSize() ) { innerPadding ->
-                    Greeting(
-                        name = "Android",
-                        modifier = Modifier.padding(innerPadding)
-                    )
+                    val navController = rememberNavController()
+                    Navigation(navController, sharedPreferencesRepository, appRepository, Modifier.padding(innerPadding))
                 }
             }
         }
-    }
-}
-
-@Composable
-fun Greeting(name: String, modifier: Modifier = Modifier) {
-    Text(
-        text = "Hello $name!",
-        modifier = modifier
-    )
-}
-
-@Preview(showBackground = true)
-@Composable
-fun GreetingPreview() {
-    LittleLemonTheme {
-        Greeting("Android")
     }
 }
