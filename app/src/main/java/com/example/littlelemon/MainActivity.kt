@@ -17,9 +17,6 @@ import javax.inject.Inject
 
 @AndroidEntryPoint
 class MainActivity : ComponentActivity() {
-    @Inject
-    lateinit var userRepository: UserRepository
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
@@ -27,7 +24,7 @@ class MainActivity : ComponentActivity() {
             LittleLemonTheme {
                 Scaffold( modifier = Modifier.fillMaxSize() ) { innerPadding ->
                     val navController = rememberNavController()
-                    Navigation(navController, userRepository, Modifier.padding(innerPadding))
+                    Navigation(navController, Modifier.padding(innerPadding))
                 }
             }
         }

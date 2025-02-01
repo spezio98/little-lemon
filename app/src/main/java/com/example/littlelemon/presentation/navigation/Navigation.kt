@@ -6,18 +6,17 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
-import com.example.littlelemon.domain.repository.UserRepository
 import com.example.littlelemon.presentation.screens.Home
 import com.example.littlelemon.presentation.screens.Onboarding
 import com.example.littlelemon.presentation.screens.Profile
 import com.example.littlelemon.presentation.viewmodel.SharedViewModel
 
 @Composable
-fun Navigation(navController: NavHostController, userRepository: UserRepository, modifier: Modifier) {
+fun Navigation(navController: NavHostController, modifier: Modifier) {
 
     val sharedViewModel: SharedViewModel = hiltViewModel()
 
-    val startDestination = if (userRepository.isAuthenticated()) {
+    val startDestination = if (sharedViewModel.isAuthenticated()) {
         Destinations.Home.route
     } else {
         Destinations.Onboarding.route
