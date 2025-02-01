@@ -6,5 +6,5 @@ interface UserRepository {
     suspend fun saveUser(user: User)
     suspend fun getUser(): User?
     fun isAuthenticated(): Boolean
-    fun clearAll()
+    fun clearUser()
 }

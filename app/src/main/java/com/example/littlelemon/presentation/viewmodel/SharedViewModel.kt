@@ -3,8 +3,11 @@ package com.example.littlelemon.presentation.viewmodel
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.littlelemon.domain.model.User
-import com.example.littlelemon.domain.repository.MenuRepository
-import com.example.littlelemon.domain.repository.UserRepository
+import com.example.littlelemon.domain.usecase.ClearMenuUseCase
+import com.example.littlelemon.domain.usecase.ClearUserUseCase
+import com.example.littlelemon.domain.usecase.GetUserUseCase
+import com.example.littlelemon.domain.usecase.IsUserAuthenticatedUseCase
+import com.example.littlelemon.domain.usecase.SaveUserUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.async
 import kotlinx.coroutines.awaitAll
@@ -16,8 +19,11 @@ import javax.inject.Inject
 
 @HiltViewModel
 class SharedViewModel @Inject constructor(
-    private val userRepository: UserRepository,
-    private val menuRepository: MenuRepository
+    private val clearMenuUseCase: ClearMenuUseCase,
+    private val saveUserUseCase: SaveUserUseCase,
+    private val getUserUseCase: GetUserUseCase,
+    private val isUserAuthenticatedUseCase: IsUserAuthenticatedUseCase,
+    private val clearUserUseCase: ClearUserUseCase
 ) : ViewModel() {
 
     private val _user = MutableStateFlow<User?>(null)
@@ -29,26 +35,26 @@ class SharedViewModel @Inject constructor(
 
     fun loadUser() {
         viewModelScope.launch {
-            _user.value = userRepository.getUser()
+            _user.value = getUserUseCase()
         }
     }
 
     fun saveUser(user: User) {
         viewModelScope.launch {
-            userRepository.saveUser(user)
+            saveUserUseCase(user)
             _user.value = user
         }
     }
 
     fun isAuthenticated(): Boolean {
-        return userRepository.isAuthenticated()
+        return isUserAuthenticatedUseCase()
     }
 
     fun clearDataAndNavigate(onComplete: () -> Unit) {
         viewModelScope.launch {
-            val clearUserDeferred = viewModelScope.async { menuRepository.clearMenu() }
+            val clearUserDeferred = viewModelScope.async { clearMenuUseCase() }
             val clearMenuDeferred = viewModelScope.async {
-                userRepository.clearAll()
+                clearUserUseCase()
                 _user.value = null
             }
             awaitAll(clearUserDeferred, clearMenuDeferred)

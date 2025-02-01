@@ -11,6 +11,12 @@ import com.example.littlelemon.data.repository.MenuRepositoryImpl
 import com.example.littlelemon.data.repository.UserRepositoryImpl
 import com.example.littlelemon.domain.repository.MenuRepository
 import com.example.littlelemon.domain.repository.UserRepository
+import com.example.littlelemon.domain.usecase.ClearMenuUseCase
+import com.example.littlelemon.domain.usecase.ClearUserUseCase
+import com.example.littlelemon.domain.usecase.GetMenuUseCase
+import com.example.littlelemon.domain.usecase.GetUserUseCase
+import com.example.littlelemon.domain.usecase.IsUserAuthenticatedUseCase
+import com.example.littlelemon.domain.usecase.SaveUserUseCase
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -66,5 +72,41 @@ object DataModules {
     @Singleton
     fun provideMenuRepository(menuApi: MenuApi, menuItemDao: MenuItemDao): MenuRepository {
         return MenuRepositoryImpl(menuApi, menuItemDao)
+    }
+
+    @Provides
+    @Singleton
+    fun provideGetMenuUseCase(menuRepository: MenuRepository): GetMenuUseCase {
+        return GetMenuUseCase(menuRepository)
+    }
+
+    @Provides
+    @Singleton
+    fun provideClearMenuUseCase(menuRepository: MenuRepository): ClearMenuUseCase {
+        return ClearMenuUseCase(menuRepository)
+    }
+
+    @Provides
+    @Singleton
+    fun provideSaveUserUseCase(userRepository: UserRepository): SaveUserUseCase {
+        return SaveUserUseCase(userRepository)
+    }
+
+    @Provides
+    @Singleton
+    fun provideGetUserUseCase(userRepository: UserRepository): GetUserUseCase {
+        return GetUserUseCase(userRepository)
+    }
+
+    @Provides
+    @Singleton
+    fun provideClearUserUseCase(userRepository: UserRepository): ClearUserUseCase {
+        return ClearUserUseCase(userRepository)
+    }
+
+    @Provides
+    @Singleton
+    fun provideIsUserAuthenticatedUseCase(userRepository: UserRepository): IsUserAuthenticatedUseCase {
+        return IsUserAuthenticatedUseCase(userRepository)
     }
 }

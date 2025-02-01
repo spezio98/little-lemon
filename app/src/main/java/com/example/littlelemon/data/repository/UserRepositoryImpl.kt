@@ -47,7 +47,7 @@ class UserRepositoryImpl @Inject constructor(
         return sharedPreferences.getBoolean(IS_USER_AUTHENTICATED, false)
     }
 
-    override fun clearAll() {
+    override fun clearUser() {
         sharedPreferences.edit().clear().commit()
     }
 }
