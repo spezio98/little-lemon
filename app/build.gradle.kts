@@ -5,7 +5,8 @@ plugins {
     alias(libs.plugins.kotlin.android)
     alias(libs.plugins.kotlin.compose)
     alias(libs.plugins.kotlin.serialization)
-    kotlin("kapt")
+    id("com.google.devtools.ksp")
+    id("com.google.dagger.hilt.android")
 }
 
 android {
@@ -68,5 +69,10 @@ dependencies {
     implementation(libs.room.ktx)
     implementation(libs.glide.compose)
     implementation(libs.room.testing)
-    kapt(libs.room.compiler)
+    implementation(libs.hilt.android)
+    ksp(libs.hilt.android.compiler)
+    implementation(libs.androidx.hilt.navigation.compose)
+    ksp(libs.androidx.room.compiler.v250)
+    implementation(libs.androidx.room.ktx.v223)
+    ksp(libs.room.compiler)
 }

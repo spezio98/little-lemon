@@ -1,17 +1,18 @@
-package com.example.littlelemon.data.remote
+package com.example.littlelemon.data.remote.dto
 
-import com.example.littlelemon.data.local.MenuItemLocal
+import com.example.littlelemon.data.local.entities.MenuItemEntity
+import com.example.littlelemon.domain.model.MenuItem
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 
 @Serializable
-data class MenuNetworkData(
+data class MenuListDto(
     @SerialName("menu")
-    val menu: List<MenuItemNetwork>
+    val menu: List<MenuItemDto>
 )
 
 @Serializable
-data class MenuItemNetwork(
+data class MenuItemDto(
     @SerialName("id")
     val id: Int,
 
@@ -30,7 +31,16 @@ data class MenuItemNetwork(
     @SerialName("category")
     val category: String
 ) {
-    fun toLocal() = MenuItemLocal(
+    fun toDomainModel() = MenuItem(
+        id = id,
+        title = title,
+        description = description,
+        price = price,
+        image = image,
+        category = category
+    )
+
+    fun toEntityModel() = MenuItemEntity(
         id = id,
         title = title,
         description = description,

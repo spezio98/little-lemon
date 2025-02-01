@@ -1,4 +1,4 @@
-package com.example.littlelemon.data.remote
+package com.example.littlelemon.data.remote.service
 
 import io.ktor.client.HttpClient
 import io.ktor.client.engine.android.Android

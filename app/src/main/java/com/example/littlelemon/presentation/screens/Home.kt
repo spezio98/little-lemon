@@ -1,4 +1,4 @@
-package com.example.littlelemon.presentation
+package com.example.littlelemon.presentation.screens
 
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.Image
@@ -43,30 +43,24 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
-import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavHostController
 import com.bumptech.glide.integration.compose.ExperimentalGlideComposeApi
 import com.bumptech.glide.integration.compose.GlideImage
 import com.example.littlelemon.R
-import com.example.littlelemon.data.AppRepository
-import com.example.littlelemon.data.local.MenuItemLocal
-import com.example.littlelemon.navigation.Destinations
+import com.example.littlelemon.domain.model.MenuItem
+import com.example.littlelemon.presentation.navigation.Destinations
 import com.example.littlelemon.presentation.viewmodel.HomeViewModel
-import com.example.littlelemon.ui.theme.Primary
-import com.example.littlelemon.ui.theme.Secondary
+import com.example.littlelemon.presentation.theme.Primary
+import com.example.littlelemon.presentation.theme.Secondary
 
 @Composable
 fun Home(
     modifier: Modifier,
     navController: NavHostController,
-    appRepository: AppRepository
+    homeViewModel: HomeViewModel = hiltViewModel()
 ) {
-    val homeViewModel: HomeViewModel = viewModel {
-        HomeViewModel(
-            appRepository
-        )
-    }
 
     val menuItems = homeViewModel.menuData.collectAsStateWithLifecycle().value
     var searchPhrase by remember { mutableStateOf("") }
@@ -282,7 +276,7 @@ fun PreviewMenuCategory() {
 fun MenuItems(
     selectedCategory: String,
     menuCategories: List<String>,
-    menuItems: List<MenuItemLocal>,
+    menuItems: List<MenuItem>,
     onMenuCategoryClicked: (String) -> Unit
 ){
     LazyColumn(
@@ -313,7 +307,7 @@ fun MenuItems(
 @OptIn(ExperimentalGlideComposeApi::class)
 @Composable
 fun MenuItem(
-    item: MenuItemLocal,
+    item: MenuItem,
     modifier: Modifier = Modifier
 ){
     Row(
@@ -358,11 +352,11 @@ fun MenuItem(
 @Composable
 fun PreviewMenuItem() {
     MenuItem(
-        item = MenuItemLocal(
+        item = MenuItem(
             id = 1,
             title = "Greek Salad",
             description = "The famous greek salad of crispy lettuce, peppers, olives, our",
-            price = "12.99",
+            price = "12.99".toDouble(),
             image = "https://github.com/Meta-Mobile-Developer-PC/Working-With-Data-API/blob/main/images/grilledFish.jpg?raw=true",
             category = "starters"
         )
@@ -393,7 +387,6 @@ fun PreviewToolbar() {
 fun PreviewHome() {
     Home(
         navController = NavHostController(LocalContext.current),
-        appRepository = AppRepository.getInstance(LocalContext.current),
         modifier = Modifier
     )
 }

@@ -2,18 +2,21 @@ package com.example.littlelemon.presentation.viewmodel
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.example.littlelemon.data.AppRepository
-import com.example.littlelemon.data.local.MenuItemLocal
+import com.example.littlelemon.domain.model.MenuItem
+import com.example.littlelemon.domain.repository.MenuRepository
+import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
+import javax.inject.Inject
 
-class HomeViewModel(
-    private val appRepository: AppRepository
+@HiltViewModel
+class HomeViewModel @Inject constructor(
+    private val menuRepository: MenuRepository
 ) : ViewModel() {
-    private val _menuData = MutableStateFlow<List<MenuItemLocal>>(listOf())
-    val menuData: StateFlow<List<MenuItemLocal>> = _menuData.asStateFlow()
+    private val _menuData = MutableStateFlow<List<MenuItem>>(listOf())
+    val menuData: StateFlow<List<MenuItem>> = _menuData.asStateFlow()
 
     init {
         fetchData()
@@ -21,8 +24,10 @@ class HomeViewModel(
 
     fun fetchData() {
         viewModelScope.launch {
-            appRepository.getMenu()
-                .collect { menuList -> _menuData.value = menuList }
+            menuRepository.getMenu().let {
+                _menuData.value = it.menu
+            }
         }
     }
+
 }

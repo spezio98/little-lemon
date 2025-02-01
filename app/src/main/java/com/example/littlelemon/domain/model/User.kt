@@ -1,6 +1,6 @@
-package com.example.littlelemon.data.model
+package com.example.littlelemon.domain.model
 
-class User(
+data class User(
     val firstName: String,
     val lastName: String,
     val email: String

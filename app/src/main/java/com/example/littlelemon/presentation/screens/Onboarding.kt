@@ -1,7 +1,8 @@
-package com.example.littlelemon.presentation
+package com.example.littlelemon.presentation.screens
 
 import android.widget.Toast
 import androidx.compose.foundation.BorderStroke
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
@@ -14,58 +15,93 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextField
 import androidx.compose.runtime.Composable
-import androidx.compose.ui.Alignment
-import androidx.compose.ui.tooling.preview.Preview
-import com.example.littlelemon.presentation.commoncomponents.Logo
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import com.example.littlelemon.presentation.theme.Primary
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.setValue
+import androidx.compose.ui.Alignment
+import androidx.compose.ui.platform.LocalContext
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
 import com.example.littlelemon.R
-import com.example.littlelemon.data.SharedPreferencesRepository
-import com.example.littlelemon.data.model.User
-import com.example.littlelemon.navigation.Destinations
-import com.example.littlelemon.ui.theme.Primary
-import com.example.littlelemon.ui.theme.Secondary
+import androidx.hilt.navigation.compose.hiltViewModel
+import com.example.littlelemon.domain.model.User
+import com.example.littlelemon.presentation.navigation.Destinations
+import com.example.littlelemon.presentation.components.Logo
+import com.example.littlelemon.presentation.viewmodel.SharedViewModel
+import com.example.littlelemon.presentation.theme.Secondary
 
 @Composable
-fun Profile(
-    modifier: Modifier,
-    navController: NavHostController,
-    sharedPreferencesRepository: SharedPreferencesRepository
-) {
+fun Onboarding(modifier: Modifier, navController: NavHostController) {
     Column(
         //verticalArrangement = Arrangement.Top,
         horizontalAlignment = Alignment.CenterHorizontally,
         modifier = modifier.fillMaxWidth()
     ) {
         Logo()
-        ProfileInfo(
-            navController,
-            sharedPreferencesRepository,
-            sharedPreferencesRepository.getUserData()
-        )
+        OnboardingTitle()
+        OnboardingForm(navController)
     }
 }
 
 @Preview(showBackground = true)
 @Composable
-fun PreviewProfile() {
-    Profile(
-        navController = rememberNavController(),
-        sharedPreferencesRepository = SharedPreferencesRepository.getSharedPreferenceRepository(LocalContext.current),
-        modifier = Modifier
+fun OnboardingPreview() {
+    Onboarding(
+        modifier = Modifier,
+        navController = rememberNavController()
     )
 }
 
 @Composable
-fun ProfileInfo(
+fun OnboardingTitle() {
+    Text(
+        text = stringResource(R.string.onboarding_title),
+        style = MaterialTheme.typography.titleLarge,
+        textAlign = TextAlign.Center,
+        color = Color.White,
+        modifier = Modifier
+            .fillMaxWidth()
+            .background(color = Primary)
+            .padding(vertical = 30.dp)
+    )
+}
+
+@Preview(showBackground = true)
+@Composable
+fun OnboardingTitlePreview() {
+    OnboardingTitle()
+}
+
+@Composable
+fun OnboardingForm(
     navController: NavHostController,
-    sharedPreferencesRepository: SharedPreferencesRepository,
-    user: User?
+    sharedViewModel: SharedViewModel = hiltViewModel()
 ) {
+
+    var firstName by remember { mutableStateOf("") }
+    var lastName by remember { mutableStateOf("") }
+    var email by remember { mutableStateOf("") }
+    val user by sharedViewModel.user.collectAsState()
+    val context = LocalContext.current
+
+    LaunchedEffect(user) {
+        if (user != null) {
+            Toast.makeText(context,
+                context.getString(R.string.successful_registration_text), Toast.LENGTH_SHORT).show()
+            navController.navigate(Destinations.Home.route)
+        }
+    }
+
     Column(
         modifier = Modifier
             .fillMaxSize()
@@ -88,10 +124,11 @@ fun ProfileInfo(
             modifier = Modifier.fillMaxWidth()
         )
         TextField(
-            value = user?.firstName ?: "",
+            value = firstName,
             textStyle = MaterialTheme.typography.bodySmall,
-            onValueChange = {},
-            readOnly = true,
+            onValueChange = {
+                firstName = it
+            },
             modifier = Modifier.fillMaxWidth()
         )
         Spacer(modifier = Modifier
@@ -105,10 +142,11 @@ fun ProfileInfo(
             modifier = Modifier.fillMaxWidth()
         )
         TextField(
-            value = user?.lastName ?: "",
+            value = lastName,
             textStyle = MaterialTheme.typography.bodySmall,
-            onValueChange = {},
-            readOnly = true,
+            onValueChange = {
+                lastName = it
+            },
             modifier = Modifier.fillMaxWidth()
         )
         Spacer(modifier = Modifier
@@ -122,10 +160,11 @@ fun ProfileInfo(
             modifier = Modifier.fillMaxWidth()
         )
         TextField(
-            value = user?.email ?: "",
+            value = email,
             textStyle = MaterialTheme.typography.bodySmall,
-            onValueChange = {},
-            readOnly = true,
+            onValueChange = {
+                email = it
+            },
             modifier = Modifier.fillMaxWidth()
         )
 
@@ -135,8 +174,17 @@ fun ProfileInfo(
         ) {
             Button(
                 onClick = {
-                    sharedPreferencesRepository.clearAll()
-                    navController.navigate(Destinations.Onboarding.route)
+                    if(firstName.isNotBlank() && lastName.isNotBlank() && email.isNotBlank()){
+                        sharedViewModel.saveUser(User(
+                            firstName = firstName,
+                            lastName = lastName,
+                            email = email
+                        ))
+                    }
+                    else{
+                        Toast.makeText(context,
+                            context.getString(R.string.unsuccessful_registration_text), Toast.LENGTH_SHORT).show()
+                    }
                 },
                 colors = ButtonDefaults.buttonColors(
                     containerColor = Secondary,
@@ -149,7 +197,7 @@ fun ProfileInfo(
                     .align(Alignment.BottomCenter)
                     .padding(16.dp)
             ) {
-                Text(text = stringResource(R.string.logout_button_text))
+                Text(text = stringResource(R.string.onboarding_register_button_text))
             }
         }
     }
@@ -157,14 +205,8 @@ fun ProfileInfo(
 
 @Preview(showBackground = true)
 @Composable
-fun ProfileInfoPreview() {
-    ProfileInfo(
-        navController = rememberNavController(),
-        sharedPreferencesRepository = SharedPreferencesRepository.getSharedPreferenceRepository(LocalContext.current),
-        user = User(
-            firstName = "John",
-            lastName = "Doe",
-            email = "john.c.breckinridge@altostrat.com"
-        )
+fun OnboardingFormPreview() {
+    OnboardingForm(
+        navController = rememberNavController()
     )
 }

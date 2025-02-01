@@ -1,4 +1,4 @@
-package com.example.littlelemon.presentation.commoncomponents
+package com.example.littlelemon.presentation.components
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.padding

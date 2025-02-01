@@ -1,4 +1,4 @@
-package com.example.littlelemon.ui.theme
+package com.example.littlelemon.presentation.theme
 
 import android.os.Build
 import androidx.compose.foundation.isSystemInDarkTheme

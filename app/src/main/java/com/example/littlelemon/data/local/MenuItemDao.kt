@@ -4,14 +4,14 @@ import androidx.room.Dao
 import androidx.room.Insert
 import androidx.room.OnConflictStrategy
 import androidx.room.Query
+import com.example.littlelemon.data.local.entities.MenuItemEntity
 import kotlinx.coroutines.flow.Flow
 
 @Dao
 interface MenuItemDao {
     @Query("SELECT * FROM menu_items")
-    fun getMenuItems(): Flow<List<MenuItemLocal>>
+    fun getMenuItems(): Flow<List<MenuItemEntity>>
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    fun insertMenuItems(menuItems: List<MenuItemLocal>)
-
+    suspend fun insertMenuItems(menuItems: List<MenuItemEntity>)
 }
