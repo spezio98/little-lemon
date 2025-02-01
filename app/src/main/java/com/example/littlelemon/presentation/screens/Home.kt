@@ -97,8 +97,13 @@ fun Home(
                 }.sorted().distinct()
                 val filteredMenuItems = if (searchPhrase.isNotBlank() || selectedCategory.isNotBlank()) {
                     menuList.menu
+                        .filter {
+                            if(selectedCategory.isNotBlank())
+                                it.category.equals(selectedCategory, ignoreCase = true)
+                            else
+                                true
+                        }
                         .filter { it.title.contains(searchPhrase, ignoreCase = true) }
-                        .filter { it.category.equals(selectedCategory, ignoreCase = true) }
                 } else {
                     menuList.menu
                 }
