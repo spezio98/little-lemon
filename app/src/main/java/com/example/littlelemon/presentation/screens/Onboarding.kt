@@ -41,7 +41,11 @@ import com.example.littlelemon.presentation.viewmodel.SharedViewModel
 import com.example.littlelemon.presentation.theme.Secondary
 
 @Composable
-fun Onboarding(modifier: Modifier, navController: NavHostController) {
+fun Onboarding(
+    modifier: Modifier,
+    navController: NavHostController,
+    viewModel: SharedViewModel
+) {
     Column(
         //verticalArrangement = Arrangement.Top,
         horizontalAlignment = Alignment.CenterHorizontally,
@@ -49,7 +53,10 @@ fun Onboarding(modifier: Modifier, navController: NavHostController) {
     ) {
         Logo()
         OnboardingTitle()
-        OnboardingForm(navController)
+        OnboardingForm(
+            navController,
+            viewModel
+        )
     }
 }
 
@@ -58,7 +65,8 @@ fun Onboarding(modifier: Modifier, navController: NavHostController) {
 fun OnboardingPreview() {
     Onboarding(
         modifier = Modifier,
-        navController = rememberNavController()
+        navController = rememberNavController(),
+        viewModel = hiltViewModel()
     )
 }
 
@@ -85,13 +93,13 @@ fun OnboardingTitlePreview() {
 @Composable
 fun OnboardingForm(
     navController: NavHostController,
-    sharedViewModel: SharedViewModel = hiltViewModel()
+    viewModel: SharedViewModel
 ) {
 
     var firstName by remember { mutableStateOf("") }
     var lastName by remember { mutableStateOf("") }
     var email by remember { mutableStateOf("") }
-    val user by sharedViewModel.user.collectAsState()
+    val user by viewModel.user.collectAsState()
     val context = LocalContext.current
 
     LaunchedEffect(user) {
@@ -175,7 +183,7 @@ fun OnboardingForm(
             Button(
                 onClick = {
                     if(firstName.isNotBlank() && lastName.isNotBlank() && email.isNotBlank()){
-                        sharedViewModel.saveUser(User(
+                        viewModel.saveUser(User(
                             firstName = firstName,
                             lastName = lastName,
                             email = email
@@ -207,6 +215,7 @@ fun OnboardingForm(
 @Composable
 fun OnboardingFormPreview() {
     OnboardingForm(
-        navController = rememberNavController()
+        navController = rememberNavController(),
+        viewModel = hiltViewModel()
     )
 }

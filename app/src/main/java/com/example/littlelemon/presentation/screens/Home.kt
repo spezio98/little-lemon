@@ -59,10 +59,10 @@ import com.example.littlelemon.presentation.theme.Secondary
 fun Home(
     modifier: Modifier,
     navController: NavHostController,
-    homeViewModel: HomeViewModel = hiltViewModel()
+    viewModel: HomeViewModel = hiltViewModel()
 ) {
 
-    val menuItems = homeViewModel.menuData.collectAsStateWithLifecycle().value
+    val menuItems = viewModel.menuData.collectAsStateWithLifecycle().value
     var searchPhrase by remember { mutableStateOf("") }
     var selectedCategory by remember { mutableStateOf("") }
     val menuCategories = menuItems.map {

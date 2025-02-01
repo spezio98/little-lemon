@@ -33,7 +33,8 @@ import com.example.littlelemon.presentation.theme.Secondary
 @Composable
 fun Profile(
     modifier: Modifier,
-    navController: NavHostController
+    navController: NavHostController,
+    viewModel: SharedViewModel
 ) {
     Column(
         //verticalArrangement = Arrangement.Top,
@@ -41,7 +42,10 @@ fun Profile(
         modifier = modifier.fillMaxWidth()
     ) {
         Logo()
-        ProfileInfo(navController)
+        ProfileInfo(
+            navController,
+            viewModel
+        )
     }
 }
 
@@ -50,16 +54,17 @@ fun Profile(
 fun PreviewProfile() {
     Profile(
         navController = rememberNavController(),
-        modifier = Modifier
+        modifier = Modifier,
+        viewModel = hiltViewModel()
     )
 }
 
 @Composable
 fun ProfileInfo(
     navController: NavHostController,
-    sharedViewModel: SharedViewModel = hiltViewModel()
+    viewModel: SharedViewModel
 ) {
-    val user by sharedViewModel.user.collectAsState()
+    val user by viewModel.user.collectAsState()
 
     Column(
         modifier = Modifier
@@ -130,7 +135,7 @@ fun ProfileInfo(
         ) {
             Button(
                 onClick = {
-                    sharedViewModel.clearUser()
+                    viewModel.clearUser()
                     navController.navigate(Destinations.Onboarding.route)
                 },
                 colors = ButtonDefaults.buttonColors(
@@ -154,6 +159,7 @@ fun ProfileInfo(
 @Composable
 fun ProfileInfoPreview() {
     ProfileInfo(
-        navController = rememberNavController()
+        navController = rememberNavController(),
+        viewModel = hiltViewModel()
     )
 }
