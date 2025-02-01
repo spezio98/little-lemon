@@ -5,6 +5,7 @@ import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
@@ -22,6 +23,7 @@ import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Search
+import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
@@ -49,7 +51,10 @@ import androidx.navigation.NavHostController
 import com.bumptech.glide.integration.compose.ExperimentalGlideComposeApi
 import com.bumptech.glide.integration.compose.GlideImage
 import com.example.littlelemon.R
+import com.example.littlelemon.core.utils.UiState
 import com.example.littlelemon.domain.model.MenuItem
+import com.example.littlelemon.domain.model.MenuList
+import com.example.littlelemon.presentation.components.ErrorMessage
 import com.example.littlelemon.presentation.navigation.Destinations
 import com.example.littlelemon.presentation.viewmodel.HomeViewModel
 import com.example.littlelemon.presentation.theme.Primary
@@ -61,20 +66,9 @@ fun Home(
     navController: NavHostController,
     viewModel: HomeViewModel = hiltViewModel()
 ) {
-
-    val menuItems = viewModel.menuData.collectAsStateWithLifecycle().value
+    val menuState by viewModel.menuState.collectAsStateWithLifecycle()
     var searchPhrase by remember { mutableStateOf("") }
     var selectedCategory by remember { mutableStateOf("") }
-    val menuCategories = menuItems.map {
-        it.category
-    }.sorted().distinct()
-    val filteredMenuItems = if (searchPhrase.isNotBlank() || selectedCategory.isNotBlank()) {
-        menuItems
-            .filter { it.title.contains(searchPhrase, ignoreCase = true) }
-            .filter { it.category.equals(selectedCategory, ignoreCase = true) }
-    } else {
-        menuItems
-    }
 
     Column(
         //verticalArrangement = Arrangement.Top,
@@ -87,18 +81,43 @@ fun Home(
         HeroSection(
             searchPhrase = searchPhrase,
             onSearchPhraseChange = { searchPhrase = it })
-        MenuItems(
-            selectedCategory = selectedCategory,
-            menuCategories = menuCategories,
-            menuItems = filteredMenuItems,
-            onMenuCategoryClicked = { category ->
-                if(category == selectedCategory)
-                    selectedCategory = ""
-                else
-                    selectedCategory = category
+        when(menuState){
+            is UiState.Loading -> {
+                Box(
+                    modifier = Modifier.fillMaxSize(),
+                    contentAlignment = Alignment.Center
+                ) {
+                    CircularProgressIndicator()
+                }
             }
-        )
-
+            is UiState.Success -> {
+                val menuList = (menuState as UiState.Success<MenuList>).data
+                val menuCategories = menuList.menu.map {
+                    it.category
+                }.sorted().distinct()
+                val filteredMenuItems = if (searchPhrase.isNotBlank() || selectedCategory.isNotBlank()) {
+                    menuList.menu
+                        .filter { it.title.contains(searchPhrase, ignoreCase = true) }
+                        .filter { it.category.equals(selectedCategory, ignoreCase = true) }
+                } else {
+                    menuList.menu
+                }
+                MenuItems(
+                    selectedCategory = selectedCategory,
+                    menuCategories = menuCategories,
+                    menuItems = filteredMenuItems,
+                    onMenuCategoryClicked = { category ->
+                        selectedCategory = if(category == selectedCategory)
+                            ""
+                        else
+                            category
+                    }
+                )
+            }
+            is UiState.Error -> {
+                ErrorMessage(message = (menuState as UiState.Error).message)
+            }
+        }
     }
 }
 

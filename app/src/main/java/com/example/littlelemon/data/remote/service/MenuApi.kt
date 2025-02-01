@@ -15,10 +15,6 @@ class MenuApi @Inject constructor(
     }
 
     suspend fun getMenu() : MenuListDto {
-        return try {
-            httpClient.get(MENU_DATA_URL).body()
-        } catch (e: Exception) {
-            MenuListDto(emptyList())
-        }
+        return httpClient.get(MENU_DATA_URL).body()
     }
 }
