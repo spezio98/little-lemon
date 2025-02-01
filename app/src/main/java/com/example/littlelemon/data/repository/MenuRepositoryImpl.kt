@@ -31,6 +31,9 @@ class MenuRepositoryImpl @Inject constructor(
             }
             return@withContext UiState.Success(MenuList(localItems.map { it.toDomainModel() }))
         }
+    }
 
+    override suspend fun clearMenu() {
+        menuItemDao.clearMenuItems()
     }
 }

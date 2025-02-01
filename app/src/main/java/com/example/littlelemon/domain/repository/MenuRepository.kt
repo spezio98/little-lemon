@@ -5,4 +5,5 @@ import com.example.littlelemon.domain.model.MenuList
 
 interface MenuRepository {
     suspend fun getMenu(): UiState<MenuList>
+    suspend fun clearMenu()
 }

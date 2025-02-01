@@ -135,8 +135,9 @@ fun ProfileInfo(
         ) {
             Button(
                 onClick = {
-                    viewModel.clearUser()
-                    navController.navigate(Destinations.Onboarding.route)
+                    viewModel.clearDataAndNavigate {
+                        navController.navigate(Destinations.Onboarding.route)
+                    }
                 },
                 colors = ButtonDefaults.buttonColors(
                     containerColor = Secondary,

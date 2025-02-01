@@ -3,8 +3,11 @@ package com.example.littlelemon.presentation.viewmodel
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.littlelemon.domain.model.User
+import com.example.littlelemon.domain.repository.MenuRepository
 import com.example.littlelemon.domain.repository.UserRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.async
+import kotlinx.coroutines.awaitAll
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
@@ -13,7 +16,8 @@ import javax.inject.Inject
 
 @HiltViewModel
 class SharedViewModel @Inject constructor(
-    private val userRepository: UserRepository
+    private val userRepository: UserRepository,
+    private val menuRepository: MenuRepository
 ) : ViewModel() {
 
     private val _user = MutableStateFlow<User?>(null)
@@ -40,10 +44,15 @@ class SharedViewModel @Inject constructor(
         return userRepository.isAuthenticated()
     }
 
-    fun clearUser() {
+    fun clearDataAndNavigate(onComplete: () -> Unit) {
         viewModelScope.launch {
-            userRepository.clearAll()
-            _user.value = null
+            val clearUserDeferred = viewModelScope.async { menuRepository.clearMenu() }
+            val clearMenuDeferred = viewModelScope.async {
+                userRepository.clearAll()
+                _user.value = null
+            }
+            awaitAll(clearUserDeferred, clearMenuDeferred)
+            onComplete()
         }
     }
 }
