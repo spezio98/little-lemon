@@ -36,7 +36,7 @@ import com.example.littlelemon.R
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.example.littlelemon.domain.model.User
 import com.example.littlelemon.presentation.navigation.Destinations
-import com.example.littlelemon.presentation.components.Logo
+import com.example.littlelemon.presentation.components.Toolbar
 import com.example.littlelemon.presentation.viewmodel.SharedViewModel
 import com.example.littlelemon.presentation.theme.Secondary
 
@@ -51,7 +51,11 @@ fun Onboarding(
         horizontalAlignment = Alignment.CenterHorizontally,
         modifier = modifier.fillMaxWidth()
     ) {
-        Logo()
+        Toolbar(
+            modifier = modifier,
+            navController = navController,
+            showProfileButton = false
+        )
         OnboardingTitle()
         OnboardingForm(
             navController,

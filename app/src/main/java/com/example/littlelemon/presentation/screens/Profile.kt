@@ -17,7 +17,6 @@ import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.tooling.preview.Preview
-import com.example.littlelemon.presentation.components.Logo
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
@@ -25,6 +24,7 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
 import com.example.littlelemon.R
+import com.example.littlelemon.presentation.components.Toolbar
 import com.example.littlelemon.presentation.navigation.Destinations
 import com.example.littlelemon.presentation.viewmodel.SharedViewModel
 import com.example.littlelemon.presentation.theme.Primary
@@ -41,7 +41,11 @@ fun Profile(
         horizontalAlignment = Alignment.CenterHorizontally,
         modifier = modifier.fillMaxWidth()
     ) {
-        Logo()
+        Toolbar(
+            modifier = modifier,
+            navController = navController,
+            showProfileButton = false
+        )
         ProfileInfo(
             navController,
             viewModel

@@ -9,17 +9,14 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.wrapContentHeight
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.itemsIndexed
-import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Search
@@ -55,7 +52,7 @@ import com.example.littlelemon.core.utils.UiState
 import com.example.littlelemon.domain.model.MenuItem
 import com.example.littlelemon.domain.model.MenuList
 import com.example.littlelemon.presentation.components.ErrorMessage
-import com.example.littlelemon.presentation.navigation.Destinations
+import com.example.littlelemon.presentation.components.Toolbar
 import com.example.littlelemon.presentation.viewmodel.HomeViewModel
 import com.example.littlelemon.presentation.theme.Primary
 import com.example.littlelemon.presentation.theme.Secondary
@@ -77,7 +74,9 @@ fun Home(
     ) {
         Toolbar(
             modifier = modifier,
-            navController = navController)
+            navController = navController,
+            showProfileButton = true
+        )
         HeroSection(
             searchPhrase = searchPhrase,
             onSearchPhraseChange = { searchPhrase = it })
@@ -123,40 +122,6 @@ fun Home(
                 ErrorMessage(message = (menuState as UiState.Error).message)
             }
         }
-    }
-}
-
-@Composable
-fun Toolbar(modifier: Modifier, navController: NavHostController) {
-    Row(
-        modifier = modifier
-            .fillMaxWidth()
-            .padding(horizontal = 15.dp),
-        verticalAlignment = Alignment.CenterVertically,
-        horizontalArrangement = Arrangement.Center
-    ){
-        Spacer(modifier = Modifier.weight(0.25f))
-        Image(
-            painter = painterResource(id = R.drawable.logo),
-            contentDescription = "Little Lemon Logo",
-            modifier = Modifier
-                .weight(0.5f, true)
-                .height(50.dp)
-        )
-        Image(
-            painter = painterResource(id = R.drawable.profile),
-            contentDescription = "Profile image",
-            alignment = Alignment.CenterEnd,
-            modifier = Modifier
-                .weight(0.25f)
-                .size(40.dp)
-                .clip(CircleShape)
-                .clickable {
-                    navController.navigate(Destinations.Profile.route){
-                        launchSingleTop = true
-                    }
-                }
-        )
     }
 }
 
@@ -396,15 +361,6 @@ fun PreviewHeroSection() {
     HeroSection(
         searchPhrase = "",
         onSearchPhraseChange = {}
-    )
-}
-
-@Preview(showBackground = true)
-@Composable
-fun PreviewToolbar() {
-    Toolbar(
-        modifier = Modifier,
-        navController = NavHostController(LocalContext.current)
     )
 }
 
