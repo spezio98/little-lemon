@@ -52,19 +52,17 @@ littlelemon/
 3. Sync Gradle files.
 4. Run the app on an emulator or a physical device.
 
-## 📸 Screenshot
+## 📸 Screenshots
+### Onboarding page
+<img src="./app/src/main/res/screenshots/onboarding_screenshot.png" alt="Onboarding page" width="300"/>
 
-![Onboarding Screen](.app/src/main/res/screenshots/onboarding_screenshot.png)
 
-Onboarding page.
+### Home page
+<img src="./app/src/main/res/screenshots/home_screenshot.png" alt="Home page" width="300"/>
 
-![Home Screen](.app/src/main/res/screenshots/home_screenshot.png)
 
-Home page.
-
-![Profile Screen](.app/src/main/res/screenshots/profile_screenshot.png)
-
-Profile page.
+### Profile page
+<img src="./app/src/main/res/screenshots/profile_screenshot.png" alt="Profile page" width="300"/>
 
 ## Usage
 
@@ -81,5 +79,5 @@ Contributions are welcome! Feel free to submit a pull request.
 
 This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
 
-👨‍💻 **Developed with ❤️ by [Spezio98]**
+👨‍💻 **Developed with ❤️ by Spezio98**
 
