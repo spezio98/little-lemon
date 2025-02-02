@@ -106,7 +106,12 @@ fun OnboardingForm(
         if (user != null) {
             Toast.makeText(context,
                 context.getString(R.string.successful_registration_text), Toast.LENGTH_SHORT).show()
-            navController.navigate(Destinations.Home.route)
+            navController.navigate(Destinations.Home.route) {
+                popUpTo(Destinations.Onboarding.route) {
+                    inclusive = true
+                }
+                launchSingleTop = true
+            }
         }
     }
 

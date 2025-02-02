@@ -152,7 +152,9 @@ fun Toolbar(modifier: Modifier, navController: NavHostController) {
                 .size(40.dp)
                 .clip(CircleShape)
                 .clickable {
-                    navController.navigate(Destinations.Profile.route)
+                    navController.navigate(Destinations.Profile.route){
+                        launchSingleTop = true
+                    }
                 }
         )
     }

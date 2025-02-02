@@ -136,7 +136,12 @@ fun ProfileInfo(
             Button(
                 onClick = {
                     viewModel.clearDataAndNavigate {
-                        navController.navigate(Destinations.Onboarding.route)
+                        navController.navigate(Destinations.Onboarding.route) {
+                            popUpTo(Destinations.Home.route) {
+                                inclusive = true
+                            }
+                            launchSingleTop = true
+                        }
                     }
                 },
                 colors = ButtonDefaults.buttonColors(
