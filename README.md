@@ -2,7 +2,9 @@
 
 Little Lemon is a simple Android application built using Kotlin, following the principles of Clean Architecture and MVVM. The app utilizes Jetpack Compose for UI, Room for local database management, SharedPreferences for simple persistent data storage, Ktor for network requests, Flows and StateFlows for reactive programming, Coroutines for asynchronous programming, and Hilt for dependency injection.
 
-This application was developed as the final project for the "Android App Capstone" module of the Meta Android Developer Professional Certificate on Coursera. However, this version of the app includes features beyond those covered in the certification, incorporating knowledge gained from personal work experience and self-study. If you are interested in a simplified version that strictly follows the certification topics, please check out the little-lemon branch.
+This application was developed as the final project for the "Android App Capstone" module of the Meta Android Developer Professional Certificate on Coursera. However, this version of the app includes features beyond those covered in the certification, incorporating knowledge gained from personal work experience and self-study. If you are interested in a simplified version that strictly follows the certification topics, please check out the `little-lemon` branch.
+
+The Figma Wireframe is available in the `/res/drawable` folder and can also be found in this Markdown file.
 
 ## ✨ Features
 
@@ -64,18 +66,21 @@ littlelemon/
 ### Profile page
 <img src="./app/src/main/res/drawable/profile_screenshot.png" alt="Profile page" width="300"/>
 
-## Usage
+## 📐 Wireframe
+<img src="./app/src/main/res/drawable/wireframe_little_lemon.png" alt="Wireframe" width="300"/>
+
+## ▶️ Usage
 
 - Register a new user and log in.
 - Browse available menu items. You can filter menu items by words or categories.
 - Show user information.
 - Perform logout
 
-## Contributing
+## 🤝 Contributing
 
 Contributions are welcome! Feel free to submit a pull request.
 
-## License
+## 📜 License
 
 This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
 

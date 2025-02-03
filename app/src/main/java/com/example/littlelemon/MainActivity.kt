@@ -9,11 +9,9 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Scaffold
 import androidx.compose.ui.Modifier
 import androidx.navigation.compose.rememberNavController
-import com.example.littlelemon.domain.repository.UserRepository
 import com.example.littlelemon.presentation.navigation.Navigation
 import com.example.littlelemon.presentation.theme.LittleLemonTheme
 import dagger.hilt.android.AndroidEntryPoint
-import javax.inject.Inject
 
 @AndroidEntryPoint
 class MainActivity : ComponentActivity() {
