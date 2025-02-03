@@ -54,15 +54,15 @@ littlelemon/
 
 ## 📸 Screenshots
 ### Onboarding page
-<img src="./app/src/main/res/drawable/screenshots/onboarding_screenshot.png" alt="Onboarding page" width="300"/>
+<img src="./app/src/main/res/drawable/onboarding_screenshot.png" alt="Onboarding page" width="300"/>
 
 
 ### Home page
-<img src="./app/src/main/res/drawable/screenshots/home_screenshot.png" alt="Home page" width="300"/>
+<img src="./app/src/main/res/drawable/home_screenshot.png" alt="Home page" width="300"/>
 
 
 ### Profile page
-<img src="./app/src/main/res/drawable/screenshots/profile_screenshot.png" alt="Profile page" width="300"/>
+<img src="./app/src/main/res/drawable/profile_screenshot.png" alt="Profile page" width="300"/>
 
 ## Usage
 
